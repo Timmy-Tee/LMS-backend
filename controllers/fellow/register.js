@@ -5,25 +5,23 @@ const upload = require('../../utils/uploadFile');
 
 const fellowRegister = async (req, res) => {
     try {
-       console.log(req)
 
-        const { firstName, lastName, email, role, portfolio, linkedIn, github, dribble, behance } = req.body;
+        const { firstName, lastName, email, role,portfolio, linkedIn, github, dribble, behance } = req.body;
+        const fellowCV = req.file.path;
 
-        const fellowCV = req.files[0].path || '';
-        
 
-        // Validation
+        // // Validation
         const { error } = signUpSchema.validate({ firstName, lastName, email, fellowCV, role, portfolio, linkedIn, github, dribble, behance });
         if (error) {
-            return res.status(400).json({ message: error.details[0].message });
+            return res.status(400).json({ 'message': error.details[0].message });
         }
 
-        const user = new Fellow({
+        const user = await new Fellow({
             firstName,
             lastName,
             email,
             role,
-            fellowCV:fellowCV,
+            fellowCV,
             portfolio,
             linkedIn,
             github,
@@ -31,15 +29,25 @@ const fellowRegister = async (req, res) => {
             behance
         });
 
-        await user.save();
+        // // await user.save();
+        await Fellow.create(user)
+        .then(()=>{
+            const token = generatePasswordCreationToken(user.email);
+            sendPasswordCreationEmail(user.email, token);
 
-        const token = generatePasswordCreationToken(user.email);
-        sendPasswordCreationEmail(user.email, token);
+            return res.status(200).json({ status: true, message: "Registration completed, check your email to create password" });
+        })
+        .catch(err=>{
+            throw (err)
+        })
+// 
+     } catch (error) {
+        // This is to Check if the email in entered has been registered
+        if(error.message.includes("E11000 duplicate key")){
+            return res.status(400).json({ 'message': "Email already exists" });
+        }
 
-        return res.status(200).json({ status: true, message: "Registration completed, check your email to create password" });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ 'message': error.message });
     }
 }
 

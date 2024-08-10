@@ -23,7 +23,7 @@ const generatePasswordCreationToken = (email) => {
 };
 
 const sendPasswordCreationEmail = (email, token) => {
-    const passwordCreationLink = `http://localhost:3000/create-password?token=${token}`;
+    const passwordCreationLink = `${process.env.SERVER_URL}api/fellow/create-password?token=${token}`;
 
     const mailOptions = {
         from: process.env.EMAIL,
