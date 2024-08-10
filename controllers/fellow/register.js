@@ -39,7 +39,8 @@ const fellowRegister = async (req, res) => {
         return res.status(200).json({ status: true, message: "Registration completed, check your email to create password" });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: error });
+        // return res.status(500).json({ message: "Internal server error" });
     }
 }
 
