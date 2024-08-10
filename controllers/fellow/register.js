@@ -28,7 +28,7 @@ const fellowRegister = async (req, res) => {
             lastName,
             email,
             role,
-            fellowCV,
+            // fellowCV,
             portfolio,
             linkedIn,
             github,
