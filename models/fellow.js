@@ -38,7 +38,7 @@ const fellowSchema = new mongoose.Schema({
     },
     fellowCV: {
         type: String,
-        // required: true
+        required: true
     },
     portfolio: {
         type: String,
