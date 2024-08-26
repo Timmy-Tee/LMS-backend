@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
+const cors = require('cors')
 const path = require('path');
 const fellowRouter = require("./routes/fellowRoute");
 const adminRoute = require("./routes/adminRoute");
@@ -32,6 +33,7 @@ const upload = multer({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
+app.use(cors())
 
 // Custom middleware to handle file uploads
 app.use((req, res, next) => {
