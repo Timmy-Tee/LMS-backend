@@ -42,7 +42,7 @@ const fellowSchema = new mongoose.Schema({
     },
     portfolio: {
         type: String,
-        required: true
+        // required: true
     },
     linkedIn: {
         type: String,
